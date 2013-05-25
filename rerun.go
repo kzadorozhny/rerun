@@ -22,10 +22,12 @@ func install(buildpath, lastError string) (installed bool, errorOutput string, e
 	cmd.Stdout = buf
 	cmd.Stderr = buf
 
+	log.Printf("installing %s", buildpath)
 	err = cmd.Run()
 
 	// when there is any output, the go command failed.
-	if buf.Len() > 0 {
+	if err != nil {
+		log.Fatalf("compile error %s", buildpath)
 		errorOutput = buf.String()
 		if errorOutput != lastError {
 			fmt.Print(errorOutput)
@@ -35,6 +37,7 @@ func install(buildpath, lastError string) (installed bool, errorOutput string, e
 	}
 
 	// all seems fine
+	log.Printf("installeld %s", buildpath)
 	installed = true
 	return
 }
